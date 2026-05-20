@@ -14,8 +14,11 @@ echo ""
 # 1. Beroenden
 echo "[1/6] Installerar beroenden..."
 sudo apt-get update -qq
-CHROMIUM="chromium-browser"
-apt-cache show chromium-browser > /dev/null 2>&1 || CHROMIUM="chromium"
+if apt-cache policy chromium-browser 2>/dev/null | grep -q "Candidate: (none)"; then
+  CHROMIUM="chromium"
+else
+  CHROMIUM="chromium-browser"
+fi
 sudo apt-get install -y "$CHROMIUM" unclutter python3 python3-venv
 echo "  OK"
 
