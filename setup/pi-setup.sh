@@ -5,7 +5,9 @@
 #   eller: bash setup/pi-setup.sh
 set -euo pipefail
 
-WARROOM_DIR="$HOME/war-room"
+REAL_HOME="${SUDO_USER:+/home/$SUDO_USER}"
+REAL_HOME="${REAL_HOME:-$HOME}"
+WARROOM_DIR="$REAL_HOME/war-room"
 PORT=8080
 
 echo "=== Bardo War Room — Pi Setup ==="
