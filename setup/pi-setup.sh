@@ -16,7 +16,7 @@ echo "[1/6] Installerar beroenden..."
 sudo apt-get update -qq
 CHROMIUM="chromium-browser"
 apt-cache show chromium-browser > /dev/null 2>&1 || CHROMIUM="chromium"
-sudo apt-get install -y -qq "$CHROMIUM" unclutter python3 python3-venv > /dev/null 2>&1
+sudo apt-get install -y "$CHROMIUM" unclutter python3 python3-venv
 echo "  OK"
 
 # 2. Kopiera filer (om scriptet körs från repot)
