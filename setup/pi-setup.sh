@@ -14,7 +14,9 @@ echo ""
 # 1. Beroenden
 echo "[1/6] Installerar beroenden..."
 sudo apt-get update -qq
-sudo apt-get install -y -qq chromium-browser unclutter python3 python3-venv > /dev/null 2>&1
+CHROMIUM="chromium-browser"
+apt-cache show chromium-browser > /dev/null 2>&1 || CHROMIUM="chromium"
+sudo apt-get install -y -qq "$CHROMIUM" unclutter python3 python3-venv > /dev/null 2>&1
 echo "  OK"
 
 # 2. Kopiera filer (om scriptet körs från repot)
@@ -66,7 +68,7 @@ cat > "$AUTOSTART_DIR/warroom-kiosk.desktop" << DESKTOP
 [Desktop Entry]
 Type=Application
 Name=War Room Kiosk
-Exec=bash -c 'sleep 10 && xset s off && xset -dpms && xset s noblank && unclutter -idle 0 & chromium-browser --kiosk --noerrdialogs --disable-infobars --disable-session-crashed-bubble --incognito --check-for-update-interval=31536000 http://localhost:$PORT/war-room.html'
+Exec=bash -c 'CHROME=$(command -v chromium-browser || command -v chromium); sleep 10 && xset s off && xset -dpms && xset s noblank && unclutter -idle 0 & $CHROME --kiosk --noerrdialogs --disable-infobars --disable-session-crashed-bubble --incognito --check-for-update-interval=31536000 http://localhost:$PORT/war-room.html'
 X-GNOME-Autostart-enabled=true
 DESKTOP
 echo "  Chromium kiosk startar vid inloggning"
@@ -78,7 +80,7 @@ echo "  Dashboard: http://localhost:$PORT/war-room.html"
 echo "  Data uppdateras var 5 min via cron"
 echo "  Chromium kiosk startar automatiskt vid boot"
 echo ""
-echo "  Testa nu:  chromium-browser --kiosk http://localhost:$PORT/war-room.html"
+echo "  Testa nu:  chromium --kiosk http://localhost:$PORT/war-room.html"
 echo "  Loggar:    tail -f /tmp/warroom-sync.log"
 echo ""
 echo "  Starta om för full autostart, eller kör manuellt:"
