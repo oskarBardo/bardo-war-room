@@ -1440,6 +1440,8 @@ section {
           <col style="width:36px">
           <col style="width:42px">
           <col style="width:41px">
+          <col style="width:50px">
+          <col style="width:50px">
         </colgroup>
         <thead>
           <tr>
@@ -1450,6 +1452,8 @@ section {
             <th>Prio</th>
             <th>Compl.</th>
             <th>Vol</th>
+            <th>Del.Owner</th>
+            <th>Operator</th>
           </tr>
         </thead>
         <tbody id="backlogBody">
@@ -2397,7 +2401,9 @@ function renderCDFromData() {
       `<td>${d.owner}</td>` +
       `<td>${prioCap(d.priority)}</td>` +
       `<td>${complCap(d.complexity)}</td>` +
-      `<td class="vol-cell">${d.volume || '\u2014'}</td>`;
+      `<td class="vol-cell">${d.volume || '\u2014'}</td>` +
+      `<td>${d.delivery_owner || '\u2014'}</td>` +
+      `<td>${d.delivery_operator || '\u2014'}</td>`;
     tbody.appendChild(tr);
   });
   sortBacklog();
@@ -2440,12 +2446,15 @@ function renderCDFromData() {
     card.className = 'kanban-card';
     card.draggable = true;
     card.dataset.updated = d.modified || d.start || new Date().toISOString().slice(0, 10);
+    var crew = [d.delivery_owner, d.delivery_operator].filter(Boolean);
+    var crewTag = crew.length ? crew.join(' / ') : '';
     card.innerHTML =
       `<div class="kanban-card-name">${d.name}</div>` +
       `<div class="kanban-card-meta">` +
         `<span class="status-dot"></span>` +
         `<span class="prio-tag ${pCls}">${pLbl}</span>` +
         (dueTag ? `<span style="font-size:0.85em;${overdue ? 'color:var(--red);font-weight:700;' : 'color:var(--text-muted);'}">${dueTag}</span>` : '') +
+        (crewTag ? `<span style="font-size:0.8em;color:var(--cyan);margin-left:4px;">${crewTag}</span>` : '') +
         `<span class="del-rep" style="margin-left:auto;">${d.days_in_stage}d</span>` +
       `</div>` +
       `<div class="sla-bar" title="${d.days_in_stage}d / ${sla}d SLA (${Math.round(ratio * 100)}%)">` +

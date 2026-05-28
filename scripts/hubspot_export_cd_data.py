@@ -59,6 +59,8 @@ PROJECT_PROPS = [
     "cd_blocker",
     "cd_scope",
     "cd_presentation_date",
+    "cd_delivery_owner",
+    "cd_delivery_operator",
 ]
 
 
@@ -197,6 +199,8 @@ def main() -> None:
                 "modified": modified[:10] if modified else "",
                 "days_in_stage": days_in_stage,
                 "presentation_date": (props.get("cd_presentation_date") or "")[:10],
+                "delivery_owner": (props.get("cd_delivery_owner") or "").capitalize(),
+                "delivery_operator": (props.get("cd_delivery_operator") or "").capitalize(),
             }
         )
 
